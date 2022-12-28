@@ -8,6 +8,11 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <header >
+          <Navbar bg="dark" variant="dark">
+            <Container>
+              
+            </Container>
+          </Navbar>
           <Link to="/">amazona</Link>
         </header>
         <main>
