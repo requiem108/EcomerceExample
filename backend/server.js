@@ -1,30 +1,28 @@
 const express = require('express')
 const data = require('./data.js');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+const seedRouter = require('./routes/seeRoutes.js');
+const productRouter = require('./routes/productRoutes.js');
+
+dotenv.config()
+
+mongoose.connect(process.env.MONGODB_URI).then(()=>{
+    console.log("Connected to MongoDB");
+}).catch(err => console.log(err));
 
 const app = express()
+app.use('/api/seed', seedRouter)
+app.use('/api/products', productRouter)
+
 const port = process.env.PORT || 5000
 
+/*
 app.get('/api/products', (req,res)=>{
     res.send(data.products)
-})
+})*/
 
-app.get('/api/products/slug/:slug', (req,res)=>{
-    const product = data.products.find(x => x.slug === req.params.slug)
-    if(product){
-        res.send(product)
-    }else{
-        res.send(404).send({message:'Producto no encontrado'})
-    }
-})
 
-app.get('/api/products/:id', (req,res)=>{
-    const product = data.products.find(x => x._id === req.params.id)
-    if(product){
-        res.send(product)
-    }else{
-        res.send(404).send({message:'Producto no encontrado'})
-    }
-})
 
 app.listen(port, () => {
     console.log(`serve at http://localhost:${port}`)
